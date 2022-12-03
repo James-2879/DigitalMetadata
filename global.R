@@ -8,7 +8,6 @@ library(shinyBS)
 library(bsplus)
 library(shinybusy)
 #library(ggpubr)
-#library(ggpubr)
 #library(Cairo)
 #library(kableExtra)
 library(DT)
@@ -22,7 +21,10 @@ library(V8)
 
 metadata <- readRDS(file = "~/Documents/metadata-shiny/data/output/metadata.RDS")
 
-contents_tag <- metadata[["tags"]][["contents"]]
+contents_tag <- c(metadata[["tags"]][["contents"]][["animals"]],
+                  metadata[["tags"]][["contents"]][["leisure"]],
+                  metadata[["tags"]][["contents"]][["transport"]])
+                  
 composition_tag <- metadata[["tags"]][["composition"]]
 color_tag <- metadata[["tags"]][["colors"]]
 main_theme <- metadata[["tags"]][["main_themes"]]

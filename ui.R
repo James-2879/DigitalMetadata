@@ -6,11 +6,16 @@ source("global.R", local = TRUE)
 
 ### JS ###
 
-#jscode <- read...
+jscode <- "
+shinyjs.collapse = function(boxid) {
+$('#' + boxid).closest('.box').find('[data-widget=collapse]').click();
+}
+"
+
 
 ### CSS ###
 
-#css <- read...
+
 
 ui <- dashboardPage(skin = "black",
                     
@@ -29,7 +34,7 @@ ui <- dashboardPage(skin = "black",
                     sidebar <- dashboardSidebar(width = 240,
                                                 shinyjs::useShinyjs(),
                                                 #shinyjs::inlineCSS(css),
-                                                #extendShinyjs(text = jscode, functions = c('disableTab','enableTab')),
+                                                shinyjs::extendShinyjs(text = jscode, functions = c('disableTab','enableTab','collapse')),
                                                 sidebarMenu(id = "main_menu", 
                                                             style = "font-size:16px",
                                                             add_busy_bar(color = "#0096FF", timeout = 400, height = "4px"),
@@ -94,7 +99,8 @@ ui <- dashboardPage(skin = "black",
                         ),
                         tabItem(tabName = "metadata_input", #submit button, file identifier
                                 fluidRow(
-                                  box(title = "Identifiers",
+                                  box(id = "identifiers",
+                                      title = "Identifiers",
                                       collapsible = TRUE,
                                       textInput(inputId = "file_name",
                                                 "Enter the identifier/file name"
@@ -109,19 +115,12 @@ ui <- dashboardPage(skin = "black",
                                                      choices = file_extensions_photo,
                                                      multiple = FALSE
                                       ),
-                                      checkboxGroupInput(inputId = "raw_exists",
-                                                         "Raw",
-                                                         choices = c("Raw file exists",
-                                                                     "Exists under different name")
+                                      checkboxInput(inputId = "raw_exists",
+                                                    label = "Raw exists",
                                       ),
-                                      textInput(inputId = "raw_name",
-                                                "Enter the raw identifier/file name"
-                                      ),
-                                      selectizeInput(inputId = "raw_extension",
-                                                     "Enter raw file extension",
-                                                     choices = file_extensions_photo_raw,
-                                                     multiple = FALSE
-                                      ),
+                                      tags$div(id = "raw_different_dynamics"),
+                                      tags$div(id = "raw_name_dynamic"),
+                                      tags$div(id = "raw_extension_dynamic"),
                                       actionBttn(inputId = "next_identifiers",
                                                  label = "Next section",
                                                  size = "sm"
@@ -129,7 +128,8 @@ ui <- dashboardPage(skin = "black",
                                   )
                                 ),  
                                 fluidRow(
-                                  box(title = "Details",
+                                  box(id = "details",
+                                      title = "Details",
                                       collapsible = TRUE,
                                       collapsed = TRUE,
                                       textInput(inputId = "title_input",
@@ -144,7 +144,8 @@ ui <- dashboardPage(skin = "black",
                                   )
                                 ),
                                 fluidRow(
-                                  box(title = "Themes (optional, for categorisation and tag autofill, add tooltip",
+                                  box(id = "themes",
+                                      title = "Themes (optional, for categorisation and tag autofill, add tooltip",
                                       collapsible = TRUE,
                                       collapsed = TRUE,
                                       selectizeInput(inputId = "main_themes",
@@ -163,7 +164,8 @@ ui <- dashboardPage(skin = "black",
                                   )
                                 ),
                                 fluidRow(
-                                  box(title = "Tags",
+                                  box(id = "tags",
+                                      title = "Tags",
                                       collapsible = TRUE,
                                       collapsed = TRUE,
                                       selectizeInput(inputId = "contents_tags",
@@ -192,9 +194,6 @@ ui <- dashboardPage(skin = "black",
                                          column(width = 12,
                                                 style="padding:0px",
                                                 tabBox(width = 12,
-                                                       tabPanel("User info",
-                                                                includeMarkdown("www/USERINFO.md") # recommended to set absolute path
-                                                       ),
                                                        tabPanel("Dev info",
                                                                 includeMarkdown("README.md") # recommended to set absolute path
                                                        )

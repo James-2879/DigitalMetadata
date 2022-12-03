@@ -1,28 +1,51 @@
 library(tidyverse)
 
-contents_tag_vector <- c("dog",
-                         "sea",
-                         "nature")
+animal_tag_vector <- c("dog", "Labrador", "cat",
+                       "animal", "pet")
 
-composition_tag_vector <- c("aerial",
-                            "above",
-                            "soft focus")
+transport_tag_vector <- c("car", "van", "vehicle",
+                          "boat", "sailing boat", "bike",
+                          "train", "metro")
 
-color_tag_vector <- c("black",
-                      "blue",
-                      "green")
+leisure_tag_vector <- c("sport", "music", "sailing",
+                        "walking", "running", "cycling",
+                        "biking", "festival", "party")
 
-main_theme_vector <- c("coast",
-                       "urban",
-                       "rural")
+composition_tag_vector <- c("aerial", "above", "soft focus",
+                            "close-up", "below", "portrait",
+                            "movement", "stillness", "low",
+                            "high", "drone")
 
-sub_theme_vector_coast <- c("sea", "beach", "coast")
+color_tag_vector <- c("black", "blue", "green",
+                      "bright", "dark", "red",
+                      "yellow", "orange", "purple",
+                      "turquoise", "brown", "white",
+                      "pink")
 
-sub_theme_vector_urban <- c("city", "town", "urban")
+emotions_tag_vector <- c("cute", "sweet", "beautiful",
+                         "happy", "sad", "angry",
+                         "friendly", "love")
 
-sub_theme_vector_rural <- c("countryside", "nature", "rural")
+main_theme_vector <- c("coast", "urban", "rural")
 
-tag_list <- list("contents" = contents_tag_vector,
+sub_theme_vector_coast <- c("sea", "beach", "coast",
+                            "sand", "water", "waves", 
+                            "ocean", "nature", "natural",
+                            "environment", "outdoors", "no people",
+                            "beauty in nature", "cliffs", "coastline")
+
+sub_theme_vector_urban <- c("city", "town", "urban",
+                            "road", "built-up", "buildings",
+                            "people", "busy")
+
+sub_theme_vector_rural <- c("countryside", "nature", "rural",
+                            "trees", "grass", "fields",
+                            "nature", "natural", "outdoors",
+                            "environment", "no people", "beauty in nature")
+
+tag_list <- list("contents" = list("animals" = animal_tag_vector,
+                                   "transport" = transport_tag_vector,
+                                   "leisure" = leisure_tag_vector),
                  "composition" = composition_tag_vector,
                  "colors" = color_tag_vector,
                  "main_themes" = main_theme_vector,
@@ -30,24 +53,15 @@ tag_list <- list("contents" = contents_tag_vector,
                                      "urban" = sub_theme_vector_urban,
                                      "rural" = sub_theme_vector_rural))
 
-media_types <- c("Photo",
-                 "Video",
-                 "Illustration")
+media_types <- c("Photo", "Video", "Illustration")
 
-file_extensions_photo <- c(".jpg",
-                           ".jpeg",
-                           ".tif",
-                           ".tiff",
-                           ".png")
+file_extensions_photo <- c(".jpg", ".jpeg", ".tif",
+                           ".tiff", ".png")
 
-file_extensions_photo_raw <- c(".raw",
-                               ".cr2",
-                               ".cr3",
+file_extensions_photo_raw <- c(".raw", ".cr2", ".cr3",
                                ".dng")
 
-file_extensions_video <- c(".mp4",
-                           ".avi",
-                           ".mov")
+file_extensions_video <- c(".mp4", ".avi", ".mov")
 
 file_extensions_video_raw <- c(".mxf")
 

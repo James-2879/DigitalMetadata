@@ -6,60 +6,90 @@ server <- function(input, output, session){
   
   
   
+  #ui box accents could go green when filled
+  
   ### Variables ###
   
   
   
-  ### Reactives ###
+  ### UI reactives ###
   
-  # eventReactive(input$submit_metadata, {
-  #   a <- input$media_type
-  #   
-  #   #add user prefixes to all of these variables
-  #   #make it so that TRUE becomes before FALSE
-  #   
-  #   if (length(input$raw_exists) == 0) {
-  #     raw_exists <- FALSE
-  #     raw_name <- "NULL"
-  #     raw_extension <- "NULL"
-  #   } else if (length(input$raw_exists) == 1) {
-  #     raw_exists <- TRUE
-  #     raw_name <- input$file_name
-  #     raw_extension <- input$raw_extension
-  #   } else if (length(input$raw_exists) == 2) {
-  #     raw_exists <- TRUE
-  #     raw_name <- input$raw_name
-  #     raw_extension <- input$raw_extension
-  #   }
-  #   
-  #   if (exists(input$main_themes) == FALSE) {
-  #     main_themes <- "NULL"
-  #     sub_themes <- "NULL"
-  #   } else if (exists(input$main_themes) == TRUE & exists(input$sub_themes) == FALSE) {
-  #     main_themes <- input$main_themes
-  #     sub_themes <- "NULL"
-  #   } else if (exists(input$sub_themes) == TRUE) {
-  #     main_themes <- input$main_themes
-  #     sub_themes <- input$sub_themes
-  #   }
-  #   
-  #   if (exists(input$composition_tags) == TRUE) {
-  #     composition_tags <- input$composition_tags
-  #   } else if (exists(input$composition_tags) == FALSE) {
-  #     composition_tags <- "NULL"
-  #   }
-  #   
-  #   if (exists(input$color_tags) == TRUE) {
-  #     color_tags <- input$color_tags
-  #   } else if (exists(input$color_tags) == FALSE) {
-  #     color_tags <- "NULL"
-  #   }
-  #   
-  #   
-  # })
+  observeEvent(input$next_identifiers, {
+    js$collapse("identifiers")
+    js$collapse("details")
+  })
+  
+  observeEvent(input$next_details, {
+    js$collapse("details")
+    js$collapse("themes")
+  })
+  
+  observeEvent(input$next_themes, {
+    js$collapse("themes")
+    js$collapse("tags")
+  })
+  
+  observeEvent(input$raw_exists, {
+    #probably use reactive values to show whether this is open or close
+    if (input$raw_exists == TRUE) {
+      insertUI(
+        selector = '#raw_name_dynamic',
+        ui = tags$div(
+          checkboxInput(inputId = "raw_different",
+                        label = "Raw file under different name"
+          ),
+          id = "raw_different_dynamic_inserted"
+        )
+      )
+      insertUI(
+        selector = '#raw_name_dynamic',
+        ui = tags$div(
+          selectizeInput(inputId = "raw_extension",
+                         "Enter raw file extension",
+                         choices = file_extensions_photo_raw,
+                         multiple = FALSE
+          ),
+          id = "raw_extension_dynamic_inserted"
+        )
+      )
+    }
+    else if (input$raw_exists == FALSE) {
+      removeUI(
+        selector = '#raw_different_dynamic_inserted'
+      )
+      removeUI(
+        selector = '#raw_extension_dynamic_inserted'
+      )
+      removeUI(
+        selector = '#raw_name_dynamic_inserted'
+      )
+    }
+  })
+  
+  observeEvent(input$raw_different, {
+    if (input$raw_different == TRUE) {
+      insertUI(
+        selector = '#raw_name_dynamic',
+        ui = tags$div(
+          textInput(inputId = "raw_name",
+                    "Enter the raw identifier/file name - should be dynamically rendered"
+          ),
+          id = "raw_name_dynamic_inserted"
+        )
+      )
+    }
+    else if (input$raw_different == FALSE) {
+      removeUI(
+        selector = '#raw_name_dynamic_inserted'
+      )
+    }
+  })
+  
+  ### Data reactives ###
   
   observeEvent(input$submit_metadata, {
-    stored_metadata <- read_tsv("~/Documents/metadata-shiny2/data/output/stored_metadata.tsv")
+    js$collapse("tags")
+    stored_metadata <- read_tsv("~/Documents/metadata-shiny/data/output/stored_metadata.tsv")
     metadata_df <- map_dfc(.x = completed_metadata,
                            .f = function(x) {
                              x <- paste0("input$", x)
@@ -71,7 +101,7 @@ server <- function(input, output, session){
                            })
     colnames(metadata_df) <- metadata_types
     metadata_df <- bind_rows(stored_metadata, metadata_df)
-    write_tsv(metadata_df, "~/Documents/metadata-shiny2/data/output/stored_metadata.tsv")
+    write_tsv(metadata_df, "~/Documents/metadata-shiny/data/output/stored_metadata.tsv")
     remove(stored_metadata, metadata_df)
     
     # use sweet alerts if some fields aren't filled
