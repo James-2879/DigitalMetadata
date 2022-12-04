@@ -38,14 +38,14 @@ ui <- dashboardPage(skin = "black",
                                                 sidebarMenu(id = "main_menu", 
                                                             style = "font-size:16px",
                                                             add_busy_bar(color = "#0096FF", timeout = 400, height = "4px"),
-                                                            menuItem("Overview",
-                                                                     tabName = "overview",
-                                                                     icon = icon("console",
-                                                                                 lib = "glyphicon"
-                                                                     )
-                                                            ),
-                                                            conditionalPanel(condition = "input.main_menu == 'overview'"
-                                                            ),
+                                                            # menuItem("Overview",
+                                                            #          tabName = "overview",
+                                                            #          icon = icon("console",
+                                                            #                      lib = "glyphicon"
+                                                            #          )
+                                                            # ),
+                                                            # conditionalPanel(condition = "input.main_menu == 'overview'"
+                                                            # ),
                                                             menuItem("Metadata input",
                                                                      tabName = "metadata_input",
                                                                      icon = icon("console",
@@ -68,35 +68,35 @@ ui <- dashboardPage(skin = "black",
                     body <- dashboardBody(
                       #tags$style(css),
                       tabItems(
-                        tabItem(tabName = "overview", 
-                                fluidRow(
-                                  box(width = 4,
-                                      title = "Box 1",
-                                      style = "font-size:14px; border-left: outset #3EB489;",
-                                      collapsible = TRUE,
-                                      collapsed = TRUE,
-                                  )
-                                ),
-                                fluidRow(
-                                  downloadBttn("download_p1",
-                                               color = "primary",
-                                               size = "sm"
-                                  ),
-                                  style="padding-left:15px; padding-top:5px;"
-                                ),
-                                fluidRow(style = "margin-top: 21px", 
-                                         column(width = 12, style="padding:0px",
-                                                tabBox(width = 12, 
-                                                       tabPanel("Tab panel 1",
-                                                                textOutput("tp1")
-                                                       ),
-                                                       tabPanel("Tab panel 2",
-                                                                textOutput("tp2")
-                                                       )
-                                                )
-                                         )
-                                )
-                        ),
+                        # tabItem(tabName = "overview", 
+                        #         fluidRow(
+                        #           box(width = 4,
+                        #               title = "Box 1",
+                        #               style = "font-size:14px; border-left: outset #3EB489;",
+                        #               collapsible = TRUE,
+                        #               collapsed = TRUE,
+                        #           )
+                        #         ),
+                        #         fluidRow(
+                        #           downloadBttn("download_p1",
+                        #                        color = "primary",
+                        #                        size = "sm"
+                        #           ),
+                        #           style="padding-left:15px; padding-top:5px;"
+                        #         ),
+                        #         fluidRow(style = "margin-top: 21px", 
+                        #                  column(width = 12, style="padding:0px",
+                        #                         tabBox(width = 12, 
+                        #                                tabPanel("Tab panel 1",
+                        #                                         textOutput("tp1")
+                        #                                ),
+                        #                                tabPanel("Tab panel 2",
+                        #                                         textOutput("tp2")
+                        #                                )
+                        #                         )
+                        #                  )
+                        #         )
+                        # ),
                         tabItem(tabName = "metadata_input", #submit button, file identifier
                                 fluidRow(
                                   box(id = "identifiers",
@@ -118,7 +118,7 @@ ui <- dashboardPage(skin = "black",
                                       checkboxInput(inputId = "raw_exists",
                                                     label = "Raw exists",
                                       ),
-                                      tags$div(id = "raw_different_dynamics"),
+                                      tags$div(id = "raw_different_dynamic"),
                                       tags$div(id = "raw_name_dynamic"),
                                       tags$div(id = "raw_extension_dynamic"),
                                       actionBttn(inputId = "next_identifiers",
@@ -144,30 +144,24 @@ ui <- dashboardPage(skin = "black",
                                   )
                                 ),
                                 fluidRow(
-                                  box(id = "themes",
-                                      title = "Themes (optional, for categorisation and tag autofill, add tooltip",
-                                      collapsible = TRUE,
-                                      collapsed = TRUE,
-                                      selectizeInput(inputId = "main_themes",
-                                                     "Main themes",
-                                                     choices = main_theme,
-                                                     multiple = TRUE
-                                      ),
-                                      selectizeInput(inputId = "sub_themes",
-                                                     "Sub themes",
-                                                     choices = sub_theme_coast, #does not change tag choices, only tags pre-selected
-                                                     multiple = TRUE
-                                      ),
-                                      actionBttn(inputId = "next_themes",
-                                                 label = "Next section",
-                                                 size = "sm")
-                                  )
-                                ),
-                                fluidRow(
                                   box(id = "tags",
                                       title = "Tags",
                                       collapsible = TRUE,
                                       collapsed = TRUE,
+                                      selectizeInput(inputId = "theme",
+                                                     "Theme (optional)",
+                                                     choices = main_theme,
+                                                     #selected = NULL,
+                                                     options = list(
+                                                       onInitialize = I('function() { this.setValue(""); }')
+                                                     )
+                                      ),
+                                      selectizeInput(inputId = "theme_tags",
+                                                     "Theme tags",
+                                                     choices = NULL,
+                                                     multiple = TRUE
+                                      ),
+                                      #tags$div(id = "theme_tags_dynamic"),
                                       selectizeInput(inputId = "contents_tags",
                                                      "Contents tags",
                                                      choices = contents_tag,

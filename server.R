@@ -21,11 +21,6 @@ server <- function(input, output, session){
   
   observeEvent(input$next_details, {
     js$collapse("details")
-    js$collapse("themes")
-  })
-  
-  observeEvent(input$next_themes, {
-    js$collapse("themes")
     js$collapse("tags")
   })
   
@@ -47,7 +42,8 @@ server <- function(input, output, session){
           selectizeInput(inputId = "raw_extension",
                          "Enter raw file extension",
                          choices = file_extensions_photo_raw,
-                         multiple = FALSE
+                         multiple = FALSE,
+                         selected = ".cr3"
           ),
           id = "raw_extension_dynamic_inserted"
         )
@@ -82,6 +78,24 @@ server <- function(input, output, session){
       removeUI(
         selector = '#raw_name_dynamic_inserted'
       )
+    }
+  })
+  
+
+  ### Search reactives ###
+  
+  observeEvent(input$theme, {
+    if (input$theme == "coast") {
+      shinyjs::enable("theme_tags")
+      updateSelectizeInput(session, 'theme_tags', choices = coast_theme_tags, server = TRUE)
+    } else if (input$theme == "rural") {
+      shinyjs::enable("theme_tags")
+      updateSelectizeInput(session, 'theme_tags', choices = rural_theme_tags, server = TRUE)
+    } else if (input$theme == "urban") {
+      shinyjs::enable("theme_tags")
+      updateSelectizeInput(session, 'theme_tags', choices = urban_theme_tags, server = TRUE)
+    } else if (input$theme == "") {
+      shinyjs::disable("theme_tags") #find the js code from greying out
     }
   })
   

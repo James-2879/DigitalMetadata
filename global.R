@@ -28,9 +28,9 @@ contents_tag <- c(metadata[["tags"]][["contents"]][["animals"]],
 composition_tag <- metadata[["tags"]][["composition"]]
 color_tag <- metadata[["tags"]][["colors"]]
 main_theme <- metadata[["tags"]][["main_themes"]]
-sub_theme_coast <- metadata[["tags"]][["sub_themes"]][["coast"]]
-sub_theme_urban <- metadata[["tags"]][["sub_themes"]][["coast"]]
-sub_theme_rural <- metadata[["tags"]][["sub_themes"]][["rural"]]
+coast_theme_tags <- metadata[["tags"]][["sub_themes"]][["coast"]]
+urban_theme_tags <- metadata[["tags"]][["sub_themes"]][["urban"]]
+rural_theme_tags <- metadata[["tags"]][["sub_themes"]][["rural"]]
 
 media_types <- metadata[["file_types"]][["media_types"]]
 
