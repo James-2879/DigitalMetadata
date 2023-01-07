@@ -119,6 +119,18 @@ server <- function(input, output, session){
     remove(stored_metadata, metadata_df)
     
     # use sweet alerts if some fields aren't filled
+    reset("file_name")
+    reset("media_type")
+    reset("file_extension")
+    reset("raw_exists")
+    reset("title_input")
+    reset("description_input")
+    reset("theme")
+    reset("theme_tags")
+    reset("contents_tags")
+    reset("composition_tags")
+    reset("color_tags")
+    js$collapse("identifiers")
   })
   
   ### Outputs ###
